@@ -1,0 +1,118 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+		}, {
+			"path": "pages/sort/sort",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false,
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+
+		}, {
+			"path": "pages/personalCenter/personalCenter",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+
+		}, {
+			"path": "pages/bookshelf/bookshelf",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+
+		}, {
+			"path": "pages/cardDetail/cardDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+
+		}, {
+			"path": "pages/search/search",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+
+			}
+		}
+	    ,{
+	        "path" : "pages/read/read",
+	        "style": {
+	        	"navigationStyle": "custom",
+	    		"app-plus":{
+	    			"bounce":"none"
+	    		}
+	        }
+	    }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {},
+	"tabBar": {
+		"selectedColor": "#ffaa00",
+		// #ifndef MP-WEIXIN
+		"fontSize": "12px",
+		// #endif
+		"backgroundColor": "#f4f7fc",
+		"borderStyle": "white",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabbar/zhuye.png",
+				"selectedIconPath": "static/tabbar/zhuye-hover.png"
+			},
+			{
+				"pagePath": "pages/sort/sort",
+				"text": "分类",
+				"iconPath": "static/tabbar/sort.png",
+				"selectedIconPath": "static/tabbar/sort-hover.png"
+			},
+			{
+				"pagePath": "pages/bookshelf/bookshelf",
+				"text": "书架",
+				"iconPath": "static/tabbar/shelf.png",
+				"selectedIconPath": "static/tabbar/shelf-hover.png"
+			},
+			{
+				"pagePath": "pages/personalCenter/personalCenter",
+				"text": "我的",
+				"iconPath": "static/tabbar/personalcenter.png",
+				"selectedIconPath": "static/tabbar/personalcenter-hover.png"
+			}
+		]
+	}
+}
