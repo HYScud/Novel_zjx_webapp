@@ -40,7 +40,7 @@
 			toBookDetail(bookIndex) {
 				if (bookIndex === 0) {
 					uni.navigateTo({
-						url: '/pages/bookDetail/bookDetail?bookID=2001',
+						url: '/pages/read/read?bookID=2001',
 					});
 				}
 			},

@@ -74,6 +74,28 @@
 	    		}
 	        }
 	    }
+        ,{
+            "path" : "pages/sortDetail/sortDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false,
+				"app-plus": {
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+            }
+            
+        }
+        ,{
+            "path" : "components/sortMenu/sortMenu",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

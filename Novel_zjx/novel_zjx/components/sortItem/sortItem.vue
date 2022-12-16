@@ -30,7 +30,7 @@
 			toread(){
 				console.log("touch")
 				uni.navigateTo({
-					url:'/pages/read/read'
+					url:'/pages/sortDetail/sortDetail'
 				})
 			}
 		}
