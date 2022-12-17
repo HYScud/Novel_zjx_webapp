@@ -35,7 +35,20 @@
 	margin-left: 20rpx;
 	margin-right: 20rpx;
 }
-
+.content-margin-center {
+	width: auto;
+	height: auto;
+	margin-left: 40rpx;
+	margin-right: 40rpx;
+}
+.padding-center {
+	padding-top: 20rpx;
+	padding-bottom: 20rpx;
+}
+.padding-center-LR {
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+}
 .border-box {
 	box-sizing: border-box
 }
@@ -882,6 +895,9 @@
 }
 
 /*正常*/
+.font-weight-bold-sm{
+	font-weight: 500;
+}
 .font-weight-bold {
 	font-weight: 700;
 }
@@ -996,10 +1012,13 @@
 	background-color: #007bff;
 }
 
-.bg-lightmuted {
-	background-color: #f7f7f4;
+.tag_label{
+	background-color: #fff5e9;
+	padding-right: 20rpx;
+	padding-left: 20rpx;
+	padding-top: 10rpx;
+	padding-bottom: 10rpx;
 }
-
 .bg-hover-primary:hover {
 	background-color: #0062cc;
 }
@@ -1172,6 +1191,9 @@
 	border-radius: 8rpx;
 }
 
+.rounded-15 {
+	border-radius: 15rpx;
+}
 .rounded-20 {
 	border-radius: 20rpx;
 }

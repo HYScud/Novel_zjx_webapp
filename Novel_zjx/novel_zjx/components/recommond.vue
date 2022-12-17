@@ -2,21 +2,24 @@
 	<view class="bg-white margin-center rounded-20">
 		<list-header>
 			<template v-slot:title>{{cardName}}</template>
-			<template v-slot:tips><view @click="toDetail(cardName)">更多</view></template>
+			<template v-slot:tips>
+				<view @click="toCardDetail(cardName)">更多</view>
+			</template>
 		</list-header>
 		<u-row justify="start" class="flex-wrap" gutter="0.1">
-			
+
 			<block v-for="(item, index) in Rebooks" :key="index">
-				<u-col span="3" style="height: 350rpx;" class="rounded-20" >
-					<view class="flex align-center flex-column  m-2"  @tap="toBookDetail(index)">
+				<u-col span="3" style="height: 350rpx;" class="rounded-20">
+					<view class="flex align-center flex-column  m-2" @click="toBookDetail(index)">
 						<image :src="item.src" mode="widthFix" class="w-100"></image>
-						<text class="font my-1 ">{{item.name}}</text>
+						<text class="font ">{{item.name}}</text>
 						<text class="font-sm text-muted">标签</text>
 					</view>
 				</u-col>
 			</block>
+			
 		</u-row>
-		
+
 	</view>
 </template>
 
@@ -38,15 +41,15 @@
 		},
 		methods: {
 			toBookDetail(bookIndex) {
-				if (bookIndex === 0) {
-					uni.navigateTo({
-						url: '/pages/read/read?bookID=2001',
-					});
-				}
-			},
-			toDetail(cardName) {
+				console.log("dianji")
+				console.log(this.Rebooks[bookIndex])
 				uni.navigateTo({
-					url: '/pages/cardDetail/cardDetail?cardName='+cardName,
+					url: '/pages/bookDetail/bookDetail?bookId=' + this.Rebooks[bookIndex].bookId,
+				});
+			},
+			toCardDetail(cardName) {
+				uni.navigateTo({
+					url: '/pages/cardDetail/cardDetail?cardName=' + cardName,
 				});
 			},
 		},

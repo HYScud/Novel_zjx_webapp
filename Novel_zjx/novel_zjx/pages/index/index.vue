@@ -1,8 +1,8 @@
 <template>
 	<view>
-		<u-sticky>
+		<u-sticky customNavHeight="0">
 			<!-- 顶层高度 -->
-			<u-status-bar style="background-color: gold;"></u-status-bar>
+			<u-status-bar  style="background-color: gold;"></u-status-bar>
 			<!-- 导航菜单 -->
 			<view style="background-color: gold;">
 				<view class="margin-center">
@@ -104,7 +104,7 @@
 			<recommond :Rebooks="item.Rebooks" :cardName="item.cardName"></recommond>
 			<view class="mt-2"></view>
 		</block>
-		
+
 		<!-- 底部分割线 -->
 		<u-divider text="已经到底了" :dashed="true"></u-divider>
 		<view class="mt-3" style="height: 10rpx;"></view>
@@ -122,38 +122,38 @@
 			return {
 				homeCards: [{
 						/* 移动所需参数 */
-						startX: 0,
-						startY: 0,
-						endX: 0,
-						endY: 0,
-						status: false,
-
 						cardName: "推荐",
 						Rebooks: [{
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							},
 							{
 								src: "../../static/test.jpg",
 								name: "斗破苍穹2",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}
 						]
 					},
@@ -162,28 +162,34 @@
 						Rebooks: [{
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							},
 							{
 								src: "../../static/test.jpg",
 								name: "斗破苍穹2",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}, {
 								src: "../../static/test.jpg",
 								name: "斗破苍穹",
-								id: "1"
+								bookId: "1",
+								tags: ["玄幻"]
 							}
 						]
 					},
@@ -204,33 +210,6 @@
 					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
 					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
 					'https://cdn.uviewui.com/uview/swiper/swiper3.png',
-				],
-				list4: [{
-					name: '关注'
-				}, {
-					name: '推荐',
-					badge: {
-						isDot: true
-					}
-				}, {
-					name: '电影',
-				}, {
-					name: '科技'
-				}],
-				Rebooks: [{
-						src: '../../static/test.jpg',
-						name: "斗破"
-					},
-					{
-						src: '../../static/test.jpg',
-						name: "斗破"
-					}, {
-						src: '../../static/test.jpg',
-						name: "斗破"
-					}, {
-						src: '../../static/test.jpg',
-						name: "斗破"
-					}
 				]
 			}
 		},

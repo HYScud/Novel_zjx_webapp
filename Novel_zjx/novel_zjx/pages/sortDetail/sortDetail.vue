@@ -1,11 +1,12 @@
 <template>
 	<view>
-		<u-sticky>
+		<u-sticky customNavHeight="0">
+			<u-status-bar class="bg-white"></u-status-bar>
 			<sortMenu :labelList="labelList"></sortMenu>
 		</u-sticky>
 
 		<view>
-			<u-list @scrolltolower="scrolltolower">
+			<u-list @scrolltolower="scrolltolower" >
 				<u-list-item v-for="(item, index) in indexList" :key="index">
 					<view class="flex flex-row mb-2">
 						<view class="flex-1 bg-dark margin-center">
