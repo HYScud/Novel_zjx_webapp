@@ -651,6 +651,7 @@
 			**/
 			calcHeight() {
 				if (this.contentHeight) {
+					console.log(this.lineHeight)
 					let lineHeight = this.fontSize * this.lineHeight;
 					// #ifdef APP-PLUS || MP-WEIXIN
 						lineHeight = Math.floor(lineHeight*this.pixelRatio)/this.pixelRatio
@@ -665,6 +666,7 @@
 							query.select('#content').boundingClientRect(data => {
 								let height = data.height;
 								this.contentHeight = height;
+								console.log(this.lineHeight)
 								let lineHeight = this.fontSize * this.lineHeight;
 								
 								// #ifdef APP-PLUS || MP-WEIXIN

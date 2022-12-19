@@ -43,7 +43,7 @@
 		<view class="mt-2 margin-center">
 			<u-row justify="space-between" gutter="0.1">
 				<u-col span="5.8" style="height: 180rpx;background-color: aqua;" class="rounded-20">
-					<view class="flex justify-between margin-center align-center mt-1">
+					<view class="flex justify-between margin-center align-center mt-1" @click="toRankList">
 						<view class="flex flex-column">
 							<text class="font-md font-weight-bold">分类</text>
 							<view class="justify-between  flex flex-row">
@@ -220,6 +220,11 @@
 			toSearch() {
 				uni.navigateTo({
 					url: "/pages/search/search"
+				})
+			},
+			toRankList(){
+				uni.navigateTo({
+					url:'/pages/rankingList/rankingList'
 				})
 			}
 		}

@@ -1,18 +1,23 @@
 <template>
-	<view class="bg-white">
+	<view>
+		<!-- <u-status-bar></u-status-bar> -->
 		<scroll-view scroll-x="true" class="w-100" style="white-space: nowrap;">
-			<block v-for="(item,index) in labelList">
-				<view class="scroll-view-item_H" :class="item.isActive?'bg-danger':''"
-					@click="changeMenuStatus(index,labelList)">
-					<view class="margin-center">
-						<text>
-							{{item.name}}
-						</text>
+			<view class="flex flex-row flex-nowrap">
+				<block v-for="(item,index) in labelList">
+					<view class="scroll-view-item_H" :class="item.isActive?'bg-danger':''"
+						@click="changeMenuStatus(index,labelList)">
+						<view class="margin-center flex flex-1">
+							<text>
+								{{item.name}}
+							</text>
+						</view>
 					</view>
-				</view>
-			</block>
+				</block>
+			</view>
+
 		</scroll-view>
 		<scroll-view scroll-x="true" class="w-100" style="white-space: nowrap;">
+			<view class="flex flex-row flex-nowrap">
 			<block v-for="(item,index) in wordNum">
 				<view class="scroll-view-item_H" :class="item.isActive?'bg-danger':''"
 					@click="changeMenuStatus(index,wordNum)">
@@ -23,6 +28,7 @@
 					</view>
 				</view>
 			</block>
+			</view>
 		</scroll-view>
 		<view class="flex flex-row">
 			<block v-for="(item,index) in status">
@@ -49,7 +55,7 @@
 			</block>
 		</view>
 		<view class="margin-center">
-			<u-divider></u-divider>
+			<u-divider text="分割线"></u-divider>
 		</view>
 
 	</view>
@@ -128,8 +134,8 @@
 				}
 			},
 			// 请求数据
-			resSortList(){
-				
+			resSortList() {
+
 			}
 		},
 	}
@@ -137,7 +143,7 @@
 
 <style>
 	.scroll-view-item_H {
-		display: inline-block;
+		display: flex;
 		height: 60rpx;
 		line-height: 60rpx;
 		text-align: center;
