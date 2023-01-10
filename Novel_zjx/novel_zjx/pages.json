@@ -100,31 +100,27 @@
 				}
 			}
 
-		}
-	    ,{
-            "path" : "pages/comment/comment",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/rankingList/rankingList",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false,
+		}, {
+			"path": "pages/comment/comment",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/rankingList/rankingList",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": false,
 					"scrollIndicator": "none",
 					"bounce": "none"
 				}
-            }
-            
-        }
-    ],
+			}
+
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

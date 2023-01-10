@@ -1,6 +1,6 @@
 <!--本页面由uniapp切片工具生成，uni-app切片-可视化设计工具(一套代码编译到7个平台iOS、Android、H5、小程序)，软件下载地址：http://www.ymznkf.com/new_view_669.htm -->
 <template>
-	<view class="YmContent">
+	<!-- <view class="YmContent">
 			<view class="my_1">
 				<view class="my_3">
 					<image v-on:click="my_4_4_click()"  src="/static/my/images/my_4_4.jpg" mode="scaleToFill" border="0"    class="my_4"></image>
@@ -98,7 +98,8 @@
 
 		<view class="loading">{{loadingText}}</view>
 		<view class="ymBbottom"></view>
-	</view>
+	</view> -->
+	<view></view>
 </template>
 
 <script>

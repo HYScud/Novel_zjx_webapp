@@ -18,7 +18,7 @@
 					</view>
 					<!-- 全部书评 最新最热 -->
 					<view class="flex">
-						<view class="bg-muted justify-center p-1 flex rounded-circle">
+						<view class="bg-theme justify-center p-1 flex rounded-circle">
 							<view class="rounded-circle flex align-center pt-1 pb-1" :class="!isSelect?'':'bg-white'"
 								@click="changeSelect(0)">
 								<text class="margin-center font-sm">最新</text>

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-sticky>
+		<u-sticky customNavHeight="0">
 			<view class="margin-center bg-white">
 				<u-status-bar></u-status-bar>
 				<view class="flex flex-row justify-between">
@@ -20,12 +20,15 @@
 		</u-sticky>
 		<view class="margin-center">
 			<u-row justify="start" class="flex-wrap" gutter="0.1">
-				<block v-for="(item,index) in historyList":key="index">
+				<block v-for="(item,index) in historyList" :key="index">
 					<u-col span="4" class="mt-3">
-						<view class="flex-column flex m-2">
+						<view class="flex-column position-relative flex m-2">
+							<view class="tag">
+								<text class="flex flex-column text-center font-sm">原创</text>
+							</view>
 							<image src="../../static/logo.png" style="height:260rpx;width: 200rpx;"></image>
-							<text class="font-lg text_ellipsis_1">{{item.bookName}}</text>
-							<text class="text-muted">{{item.progress}}</text>
+							<text class="font-lg text-ellipsis">{{item.bookName}}</text>
+							<text class="text-muted font-sm">{{item.progress}}</text>
 						</view>
 					</u-col>
 				</block>
@@ -53,7 +56,7 @@
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹',
 						progress: '未读'
-					},{
+					}, {
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹12312312312313',
 						progress: '未读'
@@ -65,7 +68,7 @@
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹',
 						progress: '未读'
-					},{
+					}, {
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹12312312312313',
 						progress: '未读'
@@ -77,7 +80,7 @@
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹',
 						progress: '未读'
-					},{
+					}, {
 						imgUrl: '../../static/logo.png',
 						bookName: '斗破苍穹12312312312313',
 						progress: '未读'
@@ -90,7 +93,7 @@
 						bookName: '斗破苍穹',
 						progress: '未读'
 					}
-				
+
 				]
 			}
 		},
@@ -101,5 +104,25 @@
 </script>
 
 <style>
+	.tag {
+		position: absolute;
+		background: #FFB62E;
+		/* padding: 5px 0; */
+		right: 20rpx;
+		display: flex;
+		align-items: center;
+		width:20px;
+		color: #fff;
+		z-index: 233;
+	}
 
+	.tag::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 100%;
+		border-color: #FFB62E #FFB62E transparent #FFB62E;
+		border-width: 0 10px 10px 10px;
+		border-style: solid;
+	}
 </style>

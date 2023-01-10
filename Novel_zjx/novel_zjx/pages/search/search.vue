@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-sticky bgColor="#ffffff">
+		<u-sticky bgColor="#ffffff" customNavHeight="10">
 			<u-status-bar></u-status-bar>
 			<view class="align-center flex flex-row margin-center">
 				<view class="iconfont icon-zuojiantou flex font-larger" @click="back"></view>
@@ -16,12 +16,12 @@
 			<view class="mt-2 margin-center">
 				<view class="justify-between align-center flex flex-row margin-center">
 					<view class="font-lg">搜索历史</view>
-					<view class="iconfont icon-shanchu font-lg" @click="clearHistory"></view>
+					<view class="iconfont icon-shanchu font-lg text-muted" @click="clearHistory"></view>
 				</view>
 			</view>
 			<view class="mt-2 margin-center flex flex-wrap">
 				<block v-for="(item,index) in searchHistory">
-					<view class="text-muted  margin-center mr-1 rounded-20">
+					<view class="text-muted margin-center mr-1 rounded-20">
 						<text class="text-muted">{{item}}</text>
 					</view>
 				</block>

@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-sticky>
+		<u-sticky  customNavHeight="0">
 			<!-- 顶层高度 -->
 			<u-status-bar style="background-color: gold;"></u-status-bar>
 			<!-- 导航菜单 -->

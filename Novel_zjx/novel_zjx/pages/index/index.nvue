@@ -1,0 +1,240 @@
+<template>
+	<view class="bg-light-grey tabs">
+		<u-sticky customNavHeight="0" style="background-color: gold;" id="menu">
+			<!-- 顶层高度 -->
+			<u-status-bar></u-status-bar>
+			<!-- 导航菜单 -->
+			<view>
+				<view class="margin-center">
+					<u-row justify="space-between" gutter="10">
+						<u-col span="9">
+							<view class="text-center">
+								<u-tabs :list="list" :scrollable="show" lineWidth="30" class="flex-row" lineColor="#f56c6c" :activeStyle="{
+								            color: '#303133',
+								            fontWeight: 'bold',
+								            transform: 'scale(1.05)'
+								        }" :inactiveStyle="{ 
+											fontsize:'35rpx',
+								            color: '#606266',
+								            transform: 'scale(1)'
+								        }" itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;">
+								</u-tabs>
+							</view>
+						</u-col>
+						<u-col span="3">
+							<view class="text-center" @click="calHeight()">
+								<view class="iconfont font-lg icon-search"></view>
+							</view>
+						</u-col>
+					</u-row>
+				</view>
+			</view>
+		</u-sticky>
+		<!-- #ifdef APP-NVUE -->
+		<swiper class="flex-1">
+			<swiper-item>
+				<u-list class="flex-1">
+					<u-list-item>
+						<IndexItem></IndexItem>
+					</u-list-item>
+				</u-list>
+			</swiper-item>
+			<swiper-item>
+				<u-list class="flex-1">
+					<u-list-item>
+						<IndexItem></IndexItem>
+					</u-list-item>
+				</u-list>
+			</swiper-item>
+		</swiper>
+		<!-- #endif -->
+		<!-- #ifndef APP-NVUE -->
+		<swiper :style="{'height':`${ItemHeight}`+'px'}">
+			<swiper-item>
+				<u-list :style="{'height':`${ItemHeight}`+'px'}">
+					<u-list-item>
+						<IndexItem></IndexItem> 
+					</u-list-item>
+				</u-list>
+			</swiper-item>
+		</swiper>
+		<!-- #endif -->
+	</view>
+</template>
+
+<script>
+	import IndexItem from '@/components/index/indexItem.vue'
+	// import Recommond from '@/components/recommond.nvue'
+	export default {
+		components: {
+			// Recommond,
+			IndexItem
+		},
+		data() {
+			return {
+				windHeight: 0,
+				menuHeight: 0,
+				ItemHeight: 0,
+				homeCards: [{
+						/* 移动所需参数 */
+						cardName: "推荐",
+						Rebooks: [{
+								src: "../../static/test.jpg",
+								name: "菜菜的新人出书的新人",
+								bookId: "1",
+								tags: ["玄幻"]
+							},
+							{
+								src: "../../static/test.jpg",
+								name: "斗破苍穹2",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}
+						]
+					},
+					{
+						cardName: "高分佳作",
+						Rebooks: [{
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							},
+							{
+								src: "../../static/test.jpg",
+								name: "斗破苍穹2",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}, {
+								src: "../../static/test.jpg",
+								name: "斗破苍穹",
+								bookId: "1",
+								tags: ["玄幻"]
+							}
+						]
+					},
+				],
+				show: false,
+				list: [{
+						name: '推荐'
+					}, {
+						name: '男频',
+					}, {
+						name: '女频',
+					},
+					{
+						name: '出版'
+					}
+				],
+				list1: [
+					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
+					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
+					'https://cdn.uviewui.com/uview/swiper/swiper3.png',
+				]
+			}
+		},
+		onLoad() {
+			this.windHeight = uni.getSystemInfoSync().windowHeight
+			// console.log(this.bottomHeight)
+		},
+		mounted() {
+			this.calHeight()
+			console.log(this.ItemHeight, this.menuHeight)
+		},
+		methods: {
+			async calHeight() {
+				return new Promise((resolve, reject) => {
+					this.$nextTick(function() {
+						let tempHeight = 0
+						// #ifdef APP-PLUS
+						const query1 = uni.createSelectorQuery().in(this);
+						query1.select('#menu').boundingClientRect(data => {
+							tempHeight = data.height
+							this.ItemHeight = this.windHeight - tempHeight
+							console.log(this.ItemHeight)
+							resolve()
+						}).exec();
+						// #endif
+
+						// #ifdef H5 || MP-WEIXIN
+						const query2 = uni.createSelectorQuery();
+						query2.select('#menu').boundingClientRect(data => {
+							tempHeight = data.height
+							this.ItemHeight = this.windHeight - tempHeight
+							console.log(this.ItemHeight)
+							resolve()
+						}).exec();
+						// #endif
+					})
+				})
+			},
+			toSearch() {
+				console.log(1)
+				uni.navigateTo({
+					url: "/pages/search/search"
+				})
+			},
+			toRankList() {
+				uni.navigateTo({
+					url: '/pages/rankingList/rankingList'
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-PLUS-NVUE */
+	page{
+		background-color: #F0F0F0;
+	}
+	/* #endif */
+	.tabs {
+		flex: 1;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: #ffffff;
+		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100vh;
+		/* #endif */
+	}
+	.bg-light-grey {
+		background-color: #F0F0F0;
+	}
+	
+</style>

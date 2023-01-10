@@ -18,6 +18,6 @@
 	@import "@/uni_modules/uview-ui/index.scss";
 	@import url("./common/free.css");
 	@import url("http://at.alicdn.com/t/c/font_3823791_tafqpql576h.css");
-	@import url("./common/animate/animate.min.css");
-	@import url("./common/css/personal.scss");
+	// @import url("./common/animate/animate.min.css");
+	// @import url("./common/css/personal.scss");
 </style>

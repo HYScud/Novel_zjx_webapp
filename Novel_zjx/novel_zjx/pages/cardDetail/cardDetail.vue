@@ -3,7 +3,7 @@
 		<DetailList v-if="isComRes"></DetailList>
 		<u-loading-page icon-size="72" :loading-text="isFail?loaded_fail:loading_text" :loading="!isComRes"
 			:image="isFail?'../../static/load_fail.png':'../../static/loading.gif'"></u-loading-page>
-		<v </view>
+	</view>
 </template>
 
 <script>
@@ -34,7 +34,6 @@
 					})
 				}, 100),
 				this.change()
-
 		},
 		methods: {
 			change() {
