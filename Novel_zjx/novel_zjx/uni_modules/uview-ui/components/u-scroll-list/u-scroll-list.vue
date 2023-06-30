@@ -205,20 +205,19 @@ export default {
 	&__indicator {
 		@include flex;
 		justify-content: center;
-		margin-top: 15px;
+		background-color: #ff0000;
+		// &__line {
+		// 	width: 60px;
+		// 	height: 0px;
+		// 	// border-radius: 100px;
+		// 	overflow: hidden;
 
-		&__line {
-			width: 60px;
-			height: 4px;
-			border-radius: 100px;
-			overflow: hidden;
-
-			&__bar {
-				width: 20px;
-				height: 4px;
-				border-radius: 100px;
-			}
-		}
+		// 	// &__bar {
+		// 	// 	width: 20px;
+		// 	// 	height: 4px;
+		// 	// 	border-radius: 100px;
+		// 	// }
+		// }
 	}
 }
 </style>

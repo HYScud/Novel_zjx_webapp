@@ -14,7 +14,6 @@
 					</view>
 				</block>
 			</view>
-
 		</scroll-view>
 		<scroll-view scroll-x="true" class="w-100" style="white-space: nowrap;">
 			<view class="flex flex-row flex-nowrap">

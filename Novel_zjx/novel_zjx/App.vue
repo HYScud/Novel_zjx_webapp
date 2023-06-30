@@ -1,5 +1,8 @@
 <script>
 	export default {
+		globalData: {
+			baseUrl: 'http:192.168.2.8:8081/'
+		},
 		onLaunch: function() {
 			console.log('App Launch')
 		},

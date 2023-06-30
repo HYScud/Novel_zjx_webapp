@@ -6,24 +6,24 @@
 
 		<u-list @scrolltolower="scrolltolower" :height="scollListHeight">
 			<u-list-item v-for="(item, index) in indexList" :key="index" class="pb-2">
-				<view class="flex flex-row">
-					<view class="flex-1 margin-center">
-						<image :src="src" style="width:150rpx; height:250rpx"></image>
+				<view class="flex flex-row flex-1">
+					<view class="margin-center bg-danger">
+						<image :src="src" style="width:140rpx; height:200rpx"></image>
 					</view>
-					<view class="flex-3 w-50">
+					<view class="justify-between flex flex-column">
 						<view class="justify-between">
 							<u-row justify="space-between">
-								<u-col span="8">
-									<text class="text_ellipsis">狼人在月下长啸，血族在幽影中徘徊。</text>
+								<u-col span="9">
+									<text class="text_ellipsis_1">狼人在月下长啸，血族在幽影中徘徊。</text>
 								</u-col>
-								<u-col span="3">
-									<text class="text_rategrade">9.4分</text>
+								<u-col span="2" class="flex-row text-rate-red">
+									<text class="font-weight-bold">9.4</text>
+									<text>分</text>
 								</u-col>
 							</u-row>
 						</view>
-						<view class="mt-2 justify-between pr-2">
-							<text class="font-sm text_ellipsis_2 text-muted">这是最好的时代，也是最坏的时代。
-								狼人在月下长啸，血族在幽影中徘徊。
+						<view class="justify-between pr-2">
+							<text class="font-sm text_ellipsis_2 text-muted">这是最好的时代，也是最坏的时代。狼人在月下长啸，血族在幽影中徘徊。
 								仙长们修道证长生，苦行僧一心入佛国。
 								狐生九尾蔽日遮天，八百万神明端坐高天原。
 								有人叹血肉苦弱，不如机械飞升。
@@ -32,8 +32,8 @@
 								可是突然有一天，有人告诉他，他其实是血族最后一位真祖……
 								“不信？不信你问问你家养着的那只狐狸？”</text>
 						</view>
-						<view class="mt-2 pr-4">
-							<text class="font-sm text-muted text_ellipsis_1">玄幻·重生·玄幻·重生·重生·玄幻··重生·玄幻··重生·玄幻··重生·玄幻··重生·玄幻·</text>
+						<view class="w-100">
+							<text class="font-sm text-muted text_ellipsis_1">玄幻·重生·玄幻·重生·重生·玄幻·重生·玄幻·重生·玄幻·重生·玄幻</text>
 						</view>
 					</view>
 				</view>
@@ -127,13 +127,11 @@
 
 						const query1 = uni.createSelectorQuery().in(this);
 						query1.select('.calHeight').boundingClientRect(data => {
-							console.log("得到布局位置信息" + JSON.stringify(data));
+							// console.log("得到布局位置信息" + JSON.stringify(data));
 							tempHeight = data.height
-							console.log("tempHeight", tempHeight)
-							console.log(this.windowHeight)
 							this.scollListHeight = this.windowHeight - tempHeight - 20
 							// console.log("节点离页面顶部的距离为" + data.top);		
-							console.log(this.scollListHeight)
+							// console.log(this.scollListHeight)
 							resolve()
 						}).exec();
 						// #endif
@@ -141,13 +139,11 @@
 						// #ifdef H5 || MP-WEIXIN
 						const query2 = uni.createSelectorQuery();
 						query2.select('.calHeight').boundingClientRect(data => {
-							console.log("得到布局位置信息" + JSON.stringify(data));
+							// console.log("得到布局位置信息" + JSON.stringify(data));
 							tempHeight = data.height
-							console.log("tempHeight", tempHeight)
-							console.log(this.windowHeight)
 							this.scollListHeight = this.windowHeight - tempHeight - 20
 							// console.log("节点离页面顶部的距离为" + data.top);
-							console.log(this.scollListHeight)
+							// console.log(this.scollListHeight)
 							resolve()
 						}).exec();
 						// #endif
@@ -159,12 +155,11 @@
 				this.loadmore()
 			},
 			loadmore() {
-				console.log("jiazazhong")
+				// console.log("jiazazhong")
 			}
 		},
 	}
 </script>
 
 <style>
-
 </style>

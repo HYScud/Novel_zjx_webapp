@@ -1,166 +1,107 @@
 <template>
-	<view class="bg-light-grey tabs">
-		<u-sticky customNavHeight="0" style="background-color: gold;" id="menu">
+	<view class="bg-theme tabs">
+		<u-sticky customNavHeight="0" style="background-color: gold;" id="menu" class="menu" ref="menu">
 			<!-- 顶层高度 -->
 			<u-status-bar></u-status-bar>
 			<!-- 导航菜单 -->
-			<view>
-				<view class="margin-center">
-					<u-row justify="space-between" gutter="10">
-						<u-col span="9">
-							<view class="text-center">
-								<u-tabs :list="list" :scrollable="show" lineWidth="30" class="flex-row" lineColor="#f56c6c" :activeStyle="{
-								            color: '#303133',
-								            fontWeight: 'bold',
-								            transform: 'scale(1.05)'
-								        }" :inactiveStyle="{ 
-											fontsize:'35rpx',
-								            color: '#606266',
-								            transform: 'scale(1)'
-								        }" itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;">
-								</u-tabs>
-							</view>
-						</u-col>
-						<u-col span="3">
-							<view class="text-center" @click="calHeight()">
-								<view class="iconfont font-lg icon-search"></view>
-							</view>
-						</u-col>
-					</u-row>
+			<scroll-view ref="tabbar1" id="tab-bar" class="tab-bar flex align-start justify-between" :scroll="false"
+				:scroll-x="true" :show-scrollbar="false" :scroll-into-view="scrollInto">
+				<view style="flex-direction: column;">
+					<view style="flex-direction: row;">
+						<view class="uni-tab-item" v-for="(tab,index) in tabList" :key="tab.id" :id="tab.id"
+							:ref="'tabitem'+index" :data-id="index" :data-current="index" @click="ontabtap">
+							<text class="uni-tab-item-title"
+								:class="tabIndex==index ? 'uni-tab-item-title-active' : ''">{{tab.name}}</text>
+						</view>
+					</view>
+					<view class="scroll-view-indicator">
+						<view ref="underline" class="scroll-view-underline" :class="isTap ? 'scroll-view-animation':''"
+							:style="{left: indicatorLineLeft + 'px', width: indicatorLineWidth + 'px'}"></view>
+					</view>
 				</view>
-			</view>
+				<view class="mr-4">
+					<text class="uni-tab-item-title">搜索</text>
+				</view>
+			</scroll-view>
+			<view class="tab-bar-line"></view>
 		</u-sticky>
-		<!-- #ifdef APP-NVUE -->
-		<swiper class="flex-1">
-			<swiper-item>
-				<u-list class="flex-1">
-					<u-list-item>
-						<IndexItem></IndexItem>
-					</u-list-item>
-				</u-list>
+
+		<swiper class="tab-view" ref="swiper1" id="tab-bar-view" :current="tabIndex" :duration="300"
+			@change="onswiperchange" @transition="onswiperscroll" @animationfinish="animationfinish"
+			@onAnimationEnd="animationfinish">
+			<swiper-item class="swiper-item">
+				<swiper-page class="swiper-page" :pid="1" ref="page1"></swiper-page>
 			</swiper-item>
-			<swiper-item>
-				<u-list class="flex-1">
-					<u-list-item>
-						<IndexItem></IndexItem>
-					</u-list-item>
-				</u-list>
+			<swiper-item class="swiper-item">
+				<swiper-page class="swiper-page" :pid="2" ref="page2"></swiper-page>
 			</swiper-item>
-		</swiper>
-		<!-- #endif -->
-		<!-- #ifndef APP-NVUE -->
-		<swiper :style="{'height':`${ItemHeight}`+'px'}">
-			<swiper-item>
-				<u-list :style="{'height':`${ItemHeight}`+'px'}">
-					<u-list-item>
-						<IndexItem></IndexItem> 
-					</u-list-item>
-				</u-list>
+			<swiper-item class="swiper-item">
+				<swiper-page class="swiper-page" :pid="3" ref="page3"></swiper-page>
+			</swiper-item>
+			<swiper-item class="swiper-item">
+				<swiper-page class="swiper-page" :pid="4" ref="page4"></swiper-page>
 			</swiper-item>
 		</swiper>
-		<!-- #endif -->
 	</view>
 </template>
 
 <script>
-	import IndexItem from '@/components/index/indexItem.vue'
-	// import Recommond from '@/components/recommond.nvue'
+	// #ifdef APP-PLUS
+	const dom = weex.requireModule('dom');
+	// #endif
+
+	// 缓存每页最多
+	const MAX_CACHE_DATA = 100;
+
+	// 缓存页签数量
+	const MAX_CACHE_PAGE = 3;
+	const TAB_PRELOAD_OFFSET = 1;
+
+
+	import {
+		methods
+	} from '../../uni_modules/uview-ui/libs/mixin/mixin'
+
+	import swiperPage from '@/components/index/swiperPage.nvue';
 	export default {
 		components: {
 			// Recommond,
-			IndexItem
+			swiperPage
 		},
 		data() {
 			return {
-				windHeight: 0,
-				menuHeight: 0,
-				ItemHeight: 0,
-				homeCards: [{
-						/* 移动所需参数 */
-						cardName: "推荐",
-						Rebooks: [{
-								src: "../../static/test.jpg",
-								name: "菜菜的新人出书的新人",
-								bookId: "1",
-								tags: ["玄幻"]
-							},
-							{
-								src: "../../static/test.jpg",
-								name: "斗破苍穹2",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}
-						]
+				tabList: [{
+						id: "tab" + 0,
+						name: "推荐",
+						pageid: 1
+					}, {
+						id: "tab" + 1,
+						name: "男频",
+						pageid: 2
+					}, {
+						id: "tab" + 2,
+						name: "女频",
+						pageid: 3
 					},
 					{
-						cardName: "高分佳作",
-						Rebooks: [{
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							},
-							{
-								src: "../../static/test.jpg",
-								name: "斗破苍穹2",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}, {
-								src: "../../static/test.jpg",
-								name: "斗破苍穹",
-								bookId: "1",
-								tags: ["玄幻"]
-							}
-						]
-					},
-				],
-				show: false,
-				list: [{
-						name: '推荐'
-					}, {
-						name: '男频',
-					}, {
-						name: '女频',
-					},
-					{
-						name: '出版'
+						id: "tab" + 3,
+						name: "新书上架",
+						pageid: 4
 					}
 				],
+				tabIndex: 0,
+				cacheTab: [],
+				scrollInto: "",
+				indicatorLineLeft: 10,
+				indicatorLineWidth: 0,
+				isTap: false,
+				showTitleView: true,
+				pageId: "page",
+				refreshing: false,
+				refreshText: "",
+				refreshFlag: false,
+				tabHeight: 0,
+				show: false,
 				list1: [
 					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
 					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
@@ -169,61 +110,252 @@
 			}
 		},
 		onLoad() {
-			this.windHeight = uni.getSystemInfoSync().windowHeight
 			// console.log(this.bottomHeight)
 		},
 		mounted() {
-			this.calHeight()
-			console.log(this.ItemHeight, this.menuHeight)
+			// this.initData()
+		},
+		onReady() {
+			this._lastTabIndex = 0;
+			this.swiperWidth = 0;
+			this.tabbarWidth = 0;
+			this.tabListSize = {};
+			this._touchTabIndex = 0;
+			var tem = [];
+			tem.push(this.$refs.page1)
+			tem.push(this.$refs.page2)
+			tem.push(this.$refs.page3)
+			tem.push(this.$refs.page4)
+			this.pageList = tem
+
+			this.selectorQuery();
+
 		},
 		methods: {
-			async calHeight() {
-				return new Promise((resolve, reject) => {
-					this.$nextTick(function() {
-						let tempHeight = 0
-						// #ifdef APP-PLUS
-						const query1 = uni.createSelectorQuery().in(this);
-						query1.select('#menu').boundingClientRect(data => {
-							tempHeight = data.height
-							this.ItemHeight = this.windHeight - tempHeight
-							console.log(this.ItemHeight)
-							resolve()
-						}).exec();
-						// #endif
+			ontabtap(e) {
+				let index = e.target.dataset.current || e.currentTarget.dataset.current;
+				//let offsetIndex = this._touchTabIndex = Math.abs(index - this._lastTabIndex) > 1;
 
-						// #ifdef H5 || MP-WEIXIN
-						const query2 = uni.createSelectorQuery();
-						query2.select('#menu').boundingClientRect(data => {
-							tempHeight = data.height
-							this.ItemHeight = this.windHeight - tempHeight
-							console.log(this.ItemHeight)
-							resolve()
-						}).exec();
-						// #endif
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				this.isTap = true;
+				var currentSize = this.tabListSize[index];
+				this.updateIndicator(currentSize.left, currentSize.width);
+				this._touchTabIndex = index;
+				// #endif
+
+				this.switchTab(index);
+			},
+			onswiperchange(e) {
+				// 注意：百度小程序会触发2次
+
+				// #ifndef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.target.current || e.detail.current;
+				this.switchTab(index);
+				// #endif
+			},
+			onswiperscroll(e) {
+				if (this.isTap) {
+					return;
+				}
+
+				var offsetX = e.detail.dx;
+				var preloadIndex = this._lastTabIndex;
+				if (offsetX > TAB_PRELOAD_OFFSET) {
+					preloadIndex++;
+				} else if (offsetX < -TAB_PRELOAD_OFFSET) {
+					preloadIndex--;
+				}
+				if (preloadIndex === this._lastTabIndex || preloadIndex < 0 || preloadIndex > this.pageList.length - 1) {
+					return;
+				}
+				if (this.pageList[preloadIndex].homeCards.length === 0) {
+					this.loadTabData(preloadIndex);
+				}
+
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				var percentage = Math.abs(this.swiperWidth / offsetX);
+				var currentSize = this.tabListSize[this._lastTabIndex];
+				var preloadSize = this.tabListSize[preloadIndex];
+				var lineL = currentSize.left + (preloadSize.left - currentSize.left) / percentage;
+				var lineW = currentSize.width + (preloadSize.width - currentSize.width) / percentage;
+				this.updateIndicator(lineL + 10, lineW - 20);
+				// #endif
+			},
+			animationfinish(e) {
+				// #ifdef APP-PLUS || H5 || MP-WEIXIN || MP-QQ
+				let index = e.detail.current;
+				if (this._touchTabIndex === index) {
+					this.isTap = false;
+				}
+				this._lastTabIndex = index;
+				this.switchTab(index);
+				this.updateIndicator(this.tabListSize[index].left + 10, this.tabListSize[index].width - 20);
+				// #endif
+			},
+			selectorQuery() {
+				// #ifdef APP-NVUE
+				// 查询 tabbar 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar').boundingClientRect().exec(rect => {
+					this.tabbarWidth = rect[0].width;
+					console.log(this.tabbarWidth)
+				});
+				// 查询 tabview 宽度
+				uni.createSelectorQuery().in(this).select('#tab-bar-view').boundingClientRect().exec(rect => {
+					this.swiperWidth = rect[0].width;
+				});
+
+				// 因 nvue 暂不支持 class 查询
+				var queryTabSize = uni.createSelectorQuery().in(this);
+				for (var i = 0; i < this.tabList.length; i++) {
+					queryTabSize.select('#' + this.tabList[i].id).boundingClientRect();
+				}
+				queryTabSize.exec(rects => {
+					rects.forEach((rect) => {
+						this.tabListSize[rect.dataset.id] = rect;
 					})
+					this.updateIndicator(this.tabListSize[this.tabIndex].left + 10, this.tabListSize[this.tabIndex]
+						.width - 20);
+					this.switchTab(this.tabIndex);
+				});
+				// #endif
+
+				// #ifdef MP-WEIXIN || H5 || MP-QQ
+				uni.createSelectorQuery().in(this).select('.tab-view').fields({
+					dataset: true,
+					size: true,
+				}, (res) => {
+					this.swiperWidth = res.width;
+				}).exec();
+				uni.createSelectorQuery().in(this).selectAll('.uni-tab-item').boundingClientRect((rects) => {
+					rects.forEach((rect) => {
+						this.tabListSize[rect.dataset.id] = rect;
+					})
+					this.updateIndicator(this.tabListSize[this.tabIndex].left + 10, this.tabListSize[this.tabIndex]
+						.width - 20);
+				}).exec();
+				// #endif
+			},
+			updateIndicator(left, width) {
+				this.indicatorLineLeft = left;
+				this.indicatorLineWidth = width;
+			},
+			switchTab(index) {
+				if (this.pageList[index].homeCards.length === 0) {
+					this.loadTabData(index);
+				}
+
+				if (this.tabIndex === index) {
+					return;
+				}
+
+				// 缓存 tabId
+				if (this.pageList[this.tabIndex].homeCards.length > MAX_CACHE_DATA) {
+					let isExist = this.cacheTab.indexOf(this.tabIndex);
+					if (isExist < 0) {
+						this.cacheTab.push(this.tabIndex);
+					}
+				}
+
+				this.tabIndex = index;
+
+				// #ifdef APP-NVUE
+				this.scrollTabTo(index);
+				// #endif
+				// #ifndef APP-NVUE
+				this.scrollInto = this.tabList[index].id;
+				// #endif
+
+				// 释放 tabId
+				if (this.cacheTab.length > MAX_CACHE_PAGE) {
+					let cacheIndex = this.cacheTab[0];
+					this.clearTabData(cacheIndex);
+					this.cacheTab.splice(0, 1);
+				}
+			},
+			scrollTabTo(index) {
+				const el = this.$refs['tabitem' + index][0];
+				let offset = 0;
+				// TODO fix ios offset
+				if (index > 0) {
+					offset = this.tabbarWidth / 2 - this.tabListSize[index].width / 2;
+					if (this.tabListSize[index].right < this.tabbarWidth / 2) {
+						offset = this.tabListSize[0].width - 20;
+					}
+				}
+				dom.scrollToElement(el, {
+					offset: -offset
+				});
+			},
+			loadTabData(index) {
+				this.pageList[index].loadData();
+			},
+			clearTabData(index) {
+				this.pageList[index].clear();
+			},
+			onrefresh(e) {
+				this.refreshing = true;
+				this.refreshText = "刷新中...";
+				setTimeout(() => {
+					this.refreshing = false;
+					this.refreshFlag = false;
+					this.refreshText = "已刷新";
+				}, 2000)
+			},
+			onpullingdown(e) {
+				if (this.refreshing) {
+					return;
+				}
+
+				this.pulling = false;
+				if (Math.abs(e.pullingDistance) > Math.abs(e.viewHeight)) {
+					this.refreshFlag = true;
+					this.refreshText = "释放立即刷新";
+				} else {
+					this.refreshFlag = false;
+					this.refreshText = "下拉可以刷新";
+				}
+			},
+			//查询menu的高度
+			async getComponentWidth() {
+				// 延时一定时间，以确保节点渲染完成
+				console.log("执行")
+				await uni.$u.sleep()
+				return new Promise(resolve => {
+					// uView封装的获取节点的方法，详见文档
+					// #ifndef APP-NVUE
+					this.$uGetRect('.menu').then(res => {
+						resolve(res.width)
+					})
+					// #endif
+					// #ifdef APP-NVUE
+					// nvue的dom模块用于获取节点
+					dom.getComponentRect(this.$refs['menu'], (res) => {
+						resolve(res.size.width)
+					})
+					// #endif
 				})
 			},
-			toSearch() {
-				console.log(1)
-				uni.navigateTo({
-					url: "/pages/search/search"
-				})
-			},
-			toRankList() {
-				uni.navigateTo({
-					url: '/pages/rankingList/rankingList'
-				})
-			}
 		}
 	}
 </script>
-
 <style>
-	/* #ifndef APP-PLUS-NVUE */
-	page{
-		background-color: #F0F0F0;
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
 	}
+
 	/* #endif */
+
+	.page {
+		flex: 1;
+	}
+
+	.flexible-view {
+		background-color: #f823ff;
+	}
+
 	.tabs {
 		flex: 1;
 		flex-direction: column;
@@ -233,8 +365,92 @@
 		height: 100vh;
 		/* #endif */
 	}
-	.bg-light-grey {
-		background-color: #F0F0F0;
+
+	.tab-bar {
+		width: 750upx;
+		height: 90upx;
+		flex-direction: row;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
 	}
-	
+
+	/* #ifndef APP-NVUE */
+	.tab-bar ::-webkit-scrollbar {
+		display: none;
+		width: 0 !important;
+		height: 0 !important;
+		-webkit-appearance: none;
+		background: transparent;
+	}
+
+	/* #endif */
+
+	.scroll-view-indicator {
+		position: relative;
+		height: 10px;
+		background-color: transparent;
+	}
+
+	.scroll-view-underline {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 0;
+		background-color: #ff5500;
+	}
+
+	.scroll-view-animation {
+		transition-duration: 0.2s;
+		transition-property: left;
+	}
+
+	.tab-bar-line {
+		background-color: #cccccc;
+	}
+
+	.tab-view {
+		flex: 1;
+	}
+
+	.uni-tab-item {
+		/* #ifndef APP-PLUS */
+		display: inline-block;
+		/* #endif */
+		flex-wrap: nowrap;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.uni-tab-item-title {
+		color: #555;
+		font-size: 36upx;
+		height: 80upx;
+		font-weight: 700;
+		line-height: 80upx;
+		flex-wrap: nowrap;
+		/* #ifndef APP-PLUS */
+		white-space: nowrap;
+		/* #endif */
+	}
+
+	.uni-tab-item-title-active {
+		font-size: 36rpx;
+		/* color: #ffd630; */
+	}
+
+	.swiper-item {
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.swiper-page {
+		flex: 1;
+		flex-direction: column;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
 </style>

@@ -38,9 +38,8 @@
 				</view>
 			</u-list-item>
 		</u-list>
-
-
 	</view>
+	
 </template>
 
 <script>

@@ -1,0 +1,189 @@
+<template>
+	<list class="list" :offset-accuracy="5" :bounce="false" isSwiperList="true">
+		<!-- <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"
+			:display="refreshing ? 'show' : 'hide'">
+			<div class="refresh-view">
+				<text class="loading-text">{{refreshText}}</text>
+			</div>
+		</refresh> -->
+		<cell>
+			<view style="background-color: gold;">
+				<view class="margin-center">
+					<view class="m-2">
+						<u-swiper :list="list1"></u-swiper>
+					</view>
+					<text>{{refreshText}}</text>
+				</view>
+			</view>
+			<view class="list-item">
+				<!-- 轮播图 -->
+				<indexItem :homeCards="homeCards"></indexItem>
+			</view>
+		</cell>
+
+	</list>
+</template>
+
+<script>
+	import IndexItem from '@/components/index/indexItem.vue';
+	export default {
+		components: {
+			IndexItem
+		},
+		props: {
+			pid: {
+				type: [Number, String],
+				default: ''
+			},
+			parentId: {
+				type: String,
+				default: ''
+			},
+			novelData: {
+				type: Object,
+				default: ''
+			},
+		},
+		destroyed() {
+			uni.$off()
+		},
+		mounted() {
+			 
+		},
+		data() {
+			return {
+				menuHeight:0,
+				requestStatus: false,
+				scrollable: true,
+				refreshing: false,
+				refreshText: "",
+				refreshFlag: false,
+				homeCards: [],
+				isComRes: false,
+				isFail: false,
+				loading_text: '正在加载',
+				loaded_fail: '服务器异常',
+				list1: [
+					'https://cdn.uviewui.com/uview/swiper/swiper1.png',
+					'https://cdn.uviewui.com/uview/swiper/swiper2.png',
+					'https://cdn.uviewui.com/uview/swiper/swiper3.png',
+				]
+			}
+		},
+		methods: {	
+			onclick(e)    {
+				console.log("onclick");
+			},
+			loadData() {
+				//console.log("请求")
+				// 首次激活时被调用
+				if (!this.requestStatus) {
+					this.requestStatus = true
+					this.getRecData()
+					this.getScoreData()
+					this.getHitData()
+					setTimeout(() => {
+						// 模拟执行完毕
+						// 改变 requestStatus
+						this.requestStatus = false;
+					}, 1000);
+				}
+			},
+			getScoreData() {
+				uni.request({
+					url:getApp().globalData.baseUrl+'novel/index/score/1', //仅为示例，并非真实接口地址。
+					method: 'GET',
+					header: {
+					},
+					success: (res) => {
+						this.homeCards.push(res.data.data)
+					},
+					fail(e) {
+						console.log(e)
+					}
+				});
+			},
+			getHitData() {
+				uni.request({
+					url: getApp().globalData.baseUrl+'novel/index/hit/1', //仅为示例，并非真实接口地址。
+					method: 'GET',
+					header: {
+
+					},
+					success: (res) => {
+						//console.log(res.data)
+						this.homeCards.push(res.data.data)
+					},
+					fail(e) {
+						console.log(e)
+					}
+				});
+			},
+			getRecData() {
+				uni.request({
+					url: getApp().globalData.baseUrl+'novel/index/card/1', //仅为示例，并非真实接口地址。
+					method: 'GET',
+					header: {
+
+					},
+					success: (res) => {
+						console.log(res.data)
+						this.homeCards.push(res.data.data)
+						
+					},
+					fail(e) {
+						console.log(e)
+					}
+				});
+			},
+			clear() {
+				// 释放数据时被调用，参考 swiper-list 缓存配置
+				this.dataList.length = 0;
+			},
+			onrefresh(e) {
+				this.refreshing = true;
+				this.refreshText = "刷新中...";
+				setTimeout(() => {
+					this.refreshing = false;
+					this.refreshFlag = false;
+					this.refreshText = "已刷新";
+				}, 2000)
+			},
+			onpullingdown(e) {
+				if (this.refreshing) {
+					return;
+				}
+
+				this.pulling = false;
+				if (Math.abs(e.pullingDistance) > Math.abs(e.viewHeight)) {
+					this.refreshFlag = true;
+					this.refreshText = "释放立即刷新";
+				} else {
+					this.refreshFlag = false;
+					this.refreshText = "下拉可以刷新";
+				}
+			}
+		}
+	}
+</script>
+
+<style scoped>
+	.refresh-view {
+		width: 750rpx;
+		height: 80px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.list {
+		flex: 1;
+		background-color: #ebebeb;
+	}
+
+	.list-item {
+		margin-left: 12px;
+		margin-right: 12px;
+		border-radius: 5px;
+	}
+</style>

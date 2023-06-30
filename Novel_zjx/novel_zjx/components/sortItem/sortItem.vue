@@ -24,7 +24,7 @@
 			},
 		},
 		mounted() {
-			console.log(this.bookTabs)
+			// console.log(this.bookTabs)
 		},
 		methods:{
 			toread(){

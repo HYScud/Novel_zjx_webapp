@@ -69,7 +69,7 @@
 			}
 		},
 		methods: {
-
+			toSearch(){}
 		}
 	}
 </script>

@@ -1,0 +1,202 @@
+<!-- 书籍详情页 -->
+<template>
+	<view class="tabs bg-white">
+		<!-- 自定义导航栏 -->
+		<u-sticky class="bg-theme" customNavHeight="0" style="height: 73px;background-color: gold;">
+			<u-status-bar></u-status-bar>
+			<view class="content-margin-center padding-center">
+				<u-row justify="space-between">
+					<u-col span="0.5">
+						<view class="icon-zuojiantou iconfont font-lg" @click="back"></view>
+					</u-col>
+					<u-col span="6" v-if="show">
+						<text class="font-md font-weight-bold text_ellipsis_1"
+							style="width: 300rpx;">{{novelData.novelName}}</text>
+					</u-col>
+					<u-col span="4">
+						<view class="flex flex-row justify-between">
+							<view><text class="font-md">加入书架</text></view>
+							<text class="iconfont icon-menu font-lg"></text>
+						</view>
+					</u-col>
+				</u-row>
+			</view>
+		</u-sticky>
+		<ContentList :novelData="novelData"></ContentList>
+		<u-sticky class="border-top">
+			<view class="margin-center padding-center-10">
+				<view class="mr-3 ml-3 flex flex-row justify-between align-center">
+					<text class="margin-center font-md padding-center font-weight-bold-sm">下载</text>
+					<view class="bg-theme flex align-center m-1 rounded-circle">
+						<text class="pr-4 pl-4 pt-2 pb-2 font-weight-bold-sm text-white">免费阅读</text>
+					</view>
+				</view>
+			</view>
+		</u-sticky>
+	</view>
+</template>
+
+<script>
+	import BookDetails from '@/components/bookDetail/bookDetails.nvue';
+	import bookDetailStatus from '@/components/bookDetail/bookDetailStatus.vue';
+	import commentList from '@/components/commentList/commentList.vue';
+	import bookDetailInfo from '@/components/bookDetail/bookDetailInfo.vue';
+	import ContentList from '@/components/ContentList/ContentList.vue';
+	import time from '@/common/js/time.js';
+	export default {
+		components: {
+			BookDetails,
+			commentList,
+			bookDetailStatus,
+			bookDetailInfo,
+			ContentList
+		},
+		data() {
+			return {
+				novelIndexINfo: {},
+				novelData: {},
+				Catalogue: [],
+				isComRes: false,
+				isFail: false,
+				loading_text: '正在加载',
+				loaded_fail: '服务器异常',
+				show: true,
+			}
+		},
+		onLoad(e) {
+			this.novelIndexINfo = JSON.parse(e.data)
+			this.initData(this.novelIndexINfo.novelId)
+			this.getCatalogue(this.novelIndexINfo.novelId)
+		},
+		mounted() {
+			this.initData(1151799635268116)
+		},
+		computed: {
+			// 计算属性的 getter
+			getStatusName() {
+				var s = "";
+				console.log(this.novelData)
+				if (this.novelData != null) {
+					switch (this.novelData.status) {
+						case 1:
+							s = time.dateToTimeDistance(this.novelData.updateTime) + "连载至" + this.Catalogue.length + "章";
+							break;
+						default:
+							s = "共" + this.Catalogue.length + "章"
+							break;
+					}
+				}
+				return s;
+			}
+		},
+		methods: {
+			initData(novelId) {
+				uni.request({
+					url: getApp().globalData.baseUrl + 'novel/search/' + novelId, //仅为示例，并非真实接口地址。
+					method: "GET",
+					success: (res) => {
+						console.log("请求")
+						if (res.data.code == 20000) {
+							console.log(res.data);
+							this.novelData = res.data.data
+							this.isComRes = true
+						} else {
+							console.log(res)
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+						this.isFail = true
+					},
+				});
+			},
+			getCatalogue(novelId) {
+				uni.request({
+					url: getApp().globalData.baseUrl + 'chapter/catalogue/collection/' + novelId,
+					method: "GET",
+					success: (res) => {
+						if (res.data.code == 20000) {
+							this.Catalogue = res.data.datalist
+							console.log(this.Catalogue);
+						} else {
+							console.log(res)
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+						this.isFail = true
+					},
+				})
+			},
+			OpenPopup() {
+				console.log("show")
+				this.popupShow = true
+			},
+			close() {
+				this.popupShow = false
+			},
+			back() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			scrolltolower() {
+				this.loadmore()
+			},
+			loadmore() {
+
+			},
+			change() {
+				this.show = !this.show
+			},
+			toComment() {
+				uni.navigateTo({
+					url: '/pages/comment/comment'
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	/* #ifndef APP-PLUS */
+	page {
+		width: 100%;
+		min-height: 100%;
+		display: flex;
+	}
+
+	/* #endif */
+
+	.page {
+		flex: 1;
+	}
+
+	.swiper-item {
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.tab-view {
+		flex: 1;
+	}
+
+	.swiper-page {
+		flex: 1;
+		flex-direction: column;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	.tabs {
+		flex: 1;
+		flex-direction: column;
+		overflow: hidden;
+		/* #ifdef MP-ALIPAY || MP-BAIDU */
+		height: 100vh;
+		/* #endif */
+	}
+</style>

@@ -211,7 +211,7 @@
 				})
 			},
 			async changeListtabIndex(e) {
-				console.log(e)
+			
 				if (this.list.tabIndex >= 2 && this.scollLeft < this.listWidth) {
 					if (this.scollLeft > this.listWidth) {
 						this.scollLeft = this.listWidth

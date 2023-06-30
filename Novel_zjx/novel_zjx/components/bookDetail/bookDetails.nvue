@@ -1,0 +1,286 @@
+<template>
+	<view class="bg-dark flex flex-column">
+		<!-- 书籍 -->
+		<u-list @scrolltolower="scrolltolower" class="bg-danger">
+			<u-list-item>
+				<bookDetailInfo></bookDetailInfo>
+			</u-list-item>
+			<u-list-item class="bg-white rounded">
+				<!-- 评分 月票 阅读人数 -->
+				<bookDetailStatus></bookDetailStatus>
+				<u-divider></u-divider>
+				<!-- 简介 标签 -->
+				<view class="content-margin-center flex-column">
+					<text class="font-lg font-weight-bold">书籍简介</text>
+					<u-read-more class="pt-2 pb-2" :toggle="true" ref="syn" show-height="180">
+						<u-parse class="bg-danger" :content="novelData.synopsis"></u-parse>
+					</u-read-more>
+					<scroll-view scroll-x="true" class="w-100" style="white-space: nowrap;">
+						<view class="flex flex-row">
+							<block v-for="(item,index) in tagsList" :key="index">
+								<view class="tag_label flex rounded-circle ml-1 mr-1">
+									<text class="font-sm text-muted">{{item}}</text>
+								</view>
+							</block>
+						</view>
+					</scroll-view>
+				</view>
+				<u-divider></u-divider>
+				<!-- 目录 -->
+				<view class="flex flex-row mb-2 mr-2 ml-2 justify-between padding-center-LR align-center"
+					@click="OpenPopup">
+					<text class="font-md font-weight-bold">查看目录</text>
+					<view class="padding-center-LR flex align-center">
+						<text class="text-muted font-sm">{{getStatusName}}</text>
+						<text class="iconfont icon-youjiantou font-sm text-muted pl-2"></text>
+					</view>
+				</view>
+
+				<u-gap height="8" bgColor="#FFB74D"></u-gap>
+				<!-- 书评 评论 -->
+				<view class="content-margin-center">
+					<view class="justify-between flex padding-center">
+						<view class="flex flex-nowrap flex-row">
+							<text class="font-md font-weight-bold">书评</text>
+							<text class="pl-1 pr-1">·</text>
+							<text class="font-md font-weight-bold">{{novelData.commentNum}}</text>
+						</view>
+						<view @click="toComment">
+							<text class="iconfont text-muted font-sm font-weight-bold">全部书评</text>
+							<text class="iconfont text-muted font-sm icon-youjiantou pl-2"></text>
+						</view>
+					</view>
+					<view class="flex flex-row rounded-20 bg-lightorange margin-center p-3 justify-between">
+						<text class="iconfont text-muted font-md font-weight-bold">轻点评论</text>
+						<u-rate :count="count" v-model="value" size="24" minCount="0" gutter="6"></u-rate>
+					</view>
+
+					<!-- 评论展示 -->
+					<!-- <block v-for="(item,index) in novelData.commentDTOList" :key="index">
+							<commentList :commitList="item"></commentList>
+						</block> -->
+				</view>
+				<!-- 查看全部评论 -->
+				<view class="flex align-center justify-center padding-center text-orange" @click="toComment">
+					<text>查看全部书评</text>
+					<text class="iconfont icon-youjiantou"></text>
+				</view>
+				<u-divider></u-divider>
+
+				<view class="margin-center pb-4">
+					<text
+						class="font-sm text-muted">版权与免责声明系为保证本网站的正常发展、规避意外风险而设，其初衷是为了向用户提供不间断的优质服务。因此，建议您在接受本站服务之前，请务必仔细阅读本条款</text>
+				</view>
+			</u-list-item>
+		</u-list>
+
+		<!-- 目录 -->
+		<u-popup :show="popupShow" @close=" ">
+			<view class="flex flex-column">
+				<view class="border-bottom">
+					<view class="mr-4 ml-4 mt-2 mb-2 flex justify-between align-center">
+						<text class="iconfont icon-zuojiantou"></text>
+						<text class="font-md font-weight-bold">目录</text>
+						<text>倒序</text>
+					</view>
+				</view>
+				<view class="mr-4 ml-4 mt-2 mb-2 ">
+					<!-- <text class="text-muted">{{novelData.statusName}}</text> -->
+					<text class="text-muted pl-2" style="font-size: 28rpx;">{{getStatusName}}</text>
+				</view>
+			</view>
+			<u-list style="height: 500px;" class="">
+				<u-list-item class="m-2">
+					<view v-for="(item,index) in Catalogue" :key="index"
+						class="margin-center justify-between align-center flex m-3">
+						<text>{{item.chapterName}}</text>
+						<!-- <text class="text-muted font-sm"> 已读%1</text> -->
+					</view>
+				</u-list-item>
+			</u-list>
+		</u-popup>
+	</view>
+</template>
+
+<script>
+	import bookDetailStatus from '@/components/bookDetail/bookDetailStatus.vue';
+	import commentList from '@/components/commentList/commentList.vue';
+	import bookDetailInfo from '@/components/bookDetail/bookDetailInfo.vue';
+	import time from '@/common/js/time.js';
+	export default {
+		name: "BookDetails",
+		components: {
+			commentList,
+			bookDetailStatus,
+			bookDetailInfo,
+		},
+		props: {
+			// 检测类型 + 其他验证
+			novelData: {
+				type: Object,
+				default: {},
+				required: true,
+			}
+		},
+		data() {
+			return {
+				InfoHeight: 0,
+				pixelRatio: 0,
+				popupShow: false,
+				tagsList: [],
+				commitList: [],
+				value: 3,
+				count: 5,
+				Catalogue: [],
+				scollListHeight: 0,
+				windowHeight: 0,
+			}
+		},
+		computed: {
+			// 计算属性的 getter
+			getStatusName() {
+				var s = "";
+				switch (this.novelData.status) {
+					case 1:
+						s = time.dateToTimeDistance(this.novelData.updateTime) + "连载至" + this.Catalogue.length + "章";
+						break;
+					default:
+						s = "共" + this.Catalogue.length + "章"
+						break;
+				}
+				return s;
+			}
+		},
+		mounted() {
+			console.log(this.novelData)
+			// this.tagsList = this.novelData.tags.split(' ')
+			// this.InfoHeight = uni.getSystemInfoSync().windowHeight
+			// this.pixelRatio = uni.getSystemInfoSync().pixelRatio
+			// this.getCatalogue()
+		},
+		methods: {
+			// 获取目录
+			getCatalogue() {
+				uni.request({
+					url: getApp().globalData.baseUrl + 'chapter/catalogue/collection/' + this.novelData.novelId,
+					method: "GET",
+					success: (res) => {
+						console.log("请求")
+						if (res.data.code == 20000) {
+							this.Catalogue = res.data.datalist
+							console.log(this.Catalogue);
+						} else {
+							console.log(res)
+						}
+					},
+					fail: (error) => {
+						console.log(error);
+						this.isFail = true
+					},
+				})
+			},
+			OpenPopup() {
+				this.popupShow = true
+			},
+			close() {
+				this.popupShow = false
+			},
+			CalHeight() {
+				// 组件高度
+				return new Promise((resolve, reject) => {
+					this.$nextTick(function() {
+						let tempHeight = 0
+						// console.log("计算高度")
+						// #ifdef APP-PLUS
+
+						const query1 = uni.createSelectorQuery().in(this);
+						query1.select('.nav').boundingClientRect(data => {
+							console.log("得到布局位置信息" + JSON.stringify(data));
+							tempHeight = data.height
+							this.scollListHeight = this.windowHeight - tempHeight
+							// console.log("节点离页面顶部的距离为" + data.top);		
+							// console.log(this.scollListHeight)
+							resolve()
+						}).exec();
+
+						query1.select('.nav2').boundingClientRect(data => {
+							console.log("得到布局位置信息" + JSON.stringify(data));
+							tempHeight = data.height
+							this.scollListHeight = this.scollListHeight - tempHeight
+
+							resolve()
+						}).exec();
+
+						query1.select('.InfoHeight').boundingClientRect(data => {
+							let height = data.height;
+							this.contentHeight = height;
+							let lineHeight = lineHeight = 14 * 1.5;
+							// #ifdef APP-PLUS || MP-WEIXIN
+							lineHeight = Math.floor(lineHeight * this.pixelRatio) / this.pixelRatio
+							// #endif
+							let lineNum = Math.floor((height + Math.floor((lineHeight - 14) / 2)) /
+								lineHeight)
+							this.InfoHeight = (lineNum - 1) * lineHeight
+							resolve()
+						}).exec();
+						// #endif
+
+						// #ifdef H5 || MP-WEIXIN
+						const query2 = uni.createSelectorQuery();
+						query2.select('.nav').boundingClientRect(data => {
+							tempHeight = data.height
+							this.scollListHeight = this.windowHeight - tempHeight
+							resolve()
+						}).exec();
+
+						query2.select('.nav2').boundingClientRect(data => {
+							tempHeight = data.height
+							this.scollListHeight = this.scollListHeight - tempHeight
+							resolve()
+						}).exec();
+
+						query2.select('.InfoHeight').boundingClientRect(data => {
+							let height = data.height;
+							this.contentHeight = height;
+							let lineHeight = 20
+							lineHeight = Math.floor(lineHeight * this.pixelRatio) / this
+								.pixelRatio;
+							let lineNum = Math.floor((height + Math.floor((lineHeight - 14) / 2)) /
+								lineHeight)
+							this.InfoHeight = lineHeight + 40
+							resolve()
+						}).exec();
+						// #endif
+					});
+				})
+			},
+			scrolltolower() {
+				this.loadmore()
+			},
+			loadmore() {
+
+			},
+			change() {
+				this.show = !this.show
+			},
+			toComment() {
+				uni.navigateTo({
+					url: '/pages/comment/comment'
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+	.list {
+		flex: 1;
+		background-color: #eb0c10;
+	}
+
+	.list-item {
+		margin-left: 12px;
+		margin-right: 12px;
+		border-radius: 5px;
+	}
+</style>

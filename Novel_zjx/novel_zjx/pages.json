@@ -90,23 +90,18 @@
 			}
 
 		}, {
-			"path": "pages/bookDetail/bookDetail",
-			"style": {
-				"navigationStyle": "custom", // 隐藏系统导航栏
-				"navigationBarTextStyle": "white", // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-				"app-plus": {
-					"scrollIndicator": "none",
-					"bounce": "none"
-				}
-			}
-
-		}, {
 			"path": "pages/comment/comment",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
+		},
+		{
+			"path": "pages/commentDetail/commentDetail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}, {
 			"path": "pages/rankingList/rankingList",
 			"style": {
@@ -119,8 +114,62 @@
 				}
 			}
 
+		}, {
+			"path": "pages/readHIST/readHIST",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false,
+					"scrollIndicator": "none"
+
+				}
+			}
+
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "手机号登录",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/TicketRank/TicketRank",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/clock/clock",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/bookDetail/bookDetail",
+			"style": {
+				"app-plus": {
+					"titleNView": false,
+					"scrollIndicator": "none",
+					"bounce": "none"
+				}
+			}
+
 		}
-	],
+        ,{
+            "path" : "pages/bookDetailV2/bookDetailV2",
+           "style": {
+			   "disableScroll": true,
+           	"app-plus": {
+           		"titleNView": false,
+           		"scrollIndicator": "none",
+           		"bounce": "none"
+           	}
+           }     
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

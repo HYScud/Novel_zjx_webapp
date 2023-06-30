@@ -69,6 +69,7 @@
 					marginLeft: uni.$u.addUnit(Math.floor(this.width / this.gridNum * Number(this.offset))),
 					// #endif
 				}
+				// console.log(style.width)
 				return uni.$u.deepMerge(style, uni.$u.addStyle(this.customStyle))
 			}
 		},
@@ -80,6 +81,7 @@
 				// 支付宝小程序不支持provide/inject，所以使用这个方法获取整个父组件，在created定义，避免循环引用
 				this.updateParentData()
 				this.width = await this.parent.getComponentWidth()
+				// console.log(this.width)
 			},
 			updateParentData() {
 				this.getParentData('u-row')
